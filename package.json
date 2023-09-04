@@ -19,6 +19,8 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "axios": "^1.5.0",
+    "chakra-ui-autocomplete": "^1.4.5",
+    "chakra-ui-simple-autocomplete": "^2.3.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "formik": "^2.4.3",
@@ -28,6 +30,14 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "xlsx": "^0.18.5",
+    "yup": "^1.2.0"
+  },
+  "exports": {
+    "./dist/index.d.ts": "./dist/index.d.ts"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.5"
   }
 }
