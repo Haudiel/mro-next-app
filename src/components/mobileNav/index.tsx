@@ -153,7 +153,7 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
     };
 
     fetchData();
-  }, []);
+  }, [user?.empleadoId]);
 
   const folio = generateFolio();
 

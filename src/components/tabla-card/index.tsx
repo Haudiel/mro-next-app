@@ -45,6 +45,9 @@ import {
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
+import * as XLSX from "xlsx";
+import MyComponent from "../export-xlsx";
+import PDFViewer from "../pdf-viewer";
 
 const TablaCard = () => {
   const [pedidos, setPedidos] = React.useState<GroupedPedidos>({});
@@ -68,7 +71,7 @@ const TablaCard = () => {
       // Si está autenticado, establece el número de empleado en el estado
       setEmployeeNumber(storedEmployeeNumber);
     }
-  }, []);
+  }, [router]);
 
   function getNombreCompradorPorFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
@@ -123,11 +126,22 @@ const TablaCard = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user?.empleadoId]);
+
+  const exportToExcel = (data: any) => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // Puedes cambiar "Sheet1" por el nombre que desees para la hoja
+
+    // Guardar el archivo Excel
+    XLSX.writeFile(wb, "datos.xlsx");
+  };
 
   return (
     <>
       <ThemeProvider theme={createTheme({})}>
+        {/* <PDFViewer /> */}
+        <MyComponent />
         <div>
           {Object.keys(pedidos).map((folioPedido) => (
             <Accordion key={folioPedido}>
@@ -140,7 +154,7 @@ const TablaCard = () => {
                     {getNombreCompradorPorFolio(folioPedido)}
                   </chakra.h1>
                   <chakra.h1>
-                    <chakra.span fontWeight={"bold"}>Folio:{" "}</chakra.span>
+                    <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
                     {folioPedido}
                   </chakra.h1>
                 </chakra.div>
