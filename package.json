@@ -20,12 +20,14 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "axios": "^1.5.0",
+    "blob-to-buffer": "^1.2.9",
     "chakra-ui-autocomplete": "^1.4.5",
     "chakra-ui-simple-autocomplete": "^2.3.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "exceljs": "^4.3.0",
     "formik": "^2.4.3",
-    "framer-motion": "^10.16.2",
+    "framer-motion": "^10.16.4",
     "material-react-table": "^1.14.0",
     "next": "13.4.19",
     "react": "18.2.0",
@@ -40,6 +42,7 @@
     "./dist/index.d.ts": "./dist/index.d.ts"
   },
   "devDependencies": {
+    "@types/blob-to-buffer": "^1.2.0",
     "@types/file-saver": "^2.0.5",
     "raw-loader": "^4.0.2"
   }

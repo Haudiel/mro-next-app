@@ -81,6 +81,8 @@ export type Pedido = {
   tipoProyecto: string;
   lineaEstacion: string;
   justificacionAlta: string;
+  documento: string;
+  extension: string;
 };
 
 export type GroupedPedidos = {
@@ -125,4 +127,5 @@ export const Options = [
     { value: "14514", label: "ALVAREZ MOLINA, CRISTIAN IVAN" },
     { value: "14245", label: "MIRELES DE LA TORRE, FRANCISCA GUADALUPE" },
     { value: "14243", label: "JIMENEZ MARTINEZ, MARIA GUADALUPE" },
+    { value: "13460", label: "HERNANDEZ SALCIDO, LUIS PEDRO"}
   ];

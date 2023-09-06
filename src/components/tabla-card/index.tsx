@@ -41,6 +41,7 @@ import {
   Select,
   useDisclosure,
   chakra,
+  HStack,
 } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/navigation";
@@ -48,6 +49,7 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import * as XLSX from "xlsx";
 import MyComponent from "../export-xlsx";
 import PDFViewer from "../pdf-viewer";
+import ExportToExcelButton from "../export-excel";
 
 const TablaCard = () => {
   const [pedidos, setPedidos] = React.useState<GroupedPedidos>({});
@@ -77,6 +79,25 @@ const TablaCard = () => {
     const ped = pedidos[folio];
     if (ped && ped.length > 0) {
       return ped[0].nombreSolicitante.trim();
+    } else {
+      return undefined;
+    }
+  }
+
+  function getDocumentoPorFolio(folio: string): string | undefined {
+    const ped = pedidos[folio];
+    if (ped && ped.length > 0) {
+      return ped[0].documento;
+    } else {
+      return undefined;
+    }
+  }
+
+  function getFechaVencimientoFolio(folio: string): string | undefined {
+    const ped = pedidos[folio];
+    if (ped && ped.length > 0) {
+      const fechaVencimiento = ped[0].fechaVencimiento.split('T')
+      return fechaVencimiento[0];
     } else {
       return undefined;
     }
@@ -139,25 +160,33 @@ const TablaCard = () => {
 
   return (
     <>
+          <ExportToExcelButton />
       <ThemeProvider theme={createTheme({})}>
-        {/* <PDFViewer /> */}
-        <MyComponent />
         <div>
           {Object.keys(pedidos).map((folioPedido) => (
             <Accordion key={folioPedido}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <chakra.div>
-                  <chakra.h1>
-                    <chakra.span fontWeight={"bold"}>
-                      Nombre del solicitante:{" "}
-                    </chakra.span>
-                    {getNombreCompradorPorFolio(folioPedido)}
-                  </chakra.h1>
-                  <chakra.h1>
-                    <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
-                    {folioPedido}
-                  </chakra.h1>
-                </chakra.div>
+                <HStack>
+                  <chakra.div>
+                    <chakra.h1>
+                      <chakra.span fontWeight={"bold"}>
+                        Nombre del solicitante:{" "}
+                      </chakra.span>
+                      {getNombreCompradorPorFolio(folioPedido)}
+                    </chakra.h1>
+                    <chakra.h1>
+                      <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
+                      {folioPedido}
+                    </chakra.h1>
+                    <chakra.h1>
+                      <chakra.span fontWeight={'bold'}>Fecha de vencimiento: </chakra.span>
+                      {getFechaVencimientoFolio(folioPedido)}
+                    </chakra.h1>
+                  </chakra.div>
+                  <chakra.div ml={'950px'}>
+                    <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
+                  </chakra.div>
+                </HStack>
               </AccordionSummary>
               <AccordionDetails>
                 <TableContainer component={Paper}>
@@ -182,7 +211,7 @@ const TablaCard = () => {
                           <TableCell>{pedido.cantidad}</TableCell>
                           <TableCell>
                             <Button onClick={() => handleOpenModal(pedido)}>
-                              Editar
+                              Llenar
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -192,7 +221,7 @@ const TablaCard = () => {
                 </TableContainer>
                 <ChakraProvider>
                   <chakra.div pt={3} display="flex" justifyContent="flex-end">
-                    <Button colorScheme="teal" size="md" onClick={sendData}>
+                    <Button colorScheme="red" size="md" onClick={sendData}>
                       Enviar
                     </Button>
                   </chakra.div>

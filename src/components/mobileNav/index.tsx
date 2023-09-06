@@ -207,7 +207,7 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <Button mt={3} ref={btnRef} onClick={onOpen}>
+        <Button mt={3} ref={btnRef} onClick={onOpen} colorScheme="red">
           Crear Solicitud
         </Button>
 
