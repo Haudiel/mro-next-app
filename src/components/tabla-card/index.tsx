@@ -96,7 +96,7 @@ const TablaCard = () => {
   function getFechaVencimientoFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
     if (ped && ped.length > 0) {
-      const fechaVencimiento = ped[0].fechaVencimiento.split('T')
+      const fechaVencimiento = ped[0].fechaVencimiento.split("T");
       return fechaVencimiento[0];
     } else {
       return undefined;
@@ -160,7 +160,7 @@ const TablaCard = () => {
 
   return (
     <>
-          <ExportToExcelButton />
+      <ExportToExcelButton />
       <ThemeProvider theme={createTheme({})}>
         <div>
           {Object.keys(pedidos).map((folioPedido) => (
@@ -179,11 +179,13 @@ const TablaCard = () => {
                       {folioPedido}
                     </chakra.h1>
                     <chakra.h1>
-                      <chakra.span fontWeight={'bold'}>Fecha de vencimiento: </chakra.span>
+                      <chakra.span fontWeight={"bold"}>
+                        Fecha de vencimiento:{" "}
+                      </chakra.span>
                       {getFechaVencimientoFolio(folioPedido)}
                     </chakra.h1>
                   </chakra.div>
-                  <chakra.div ml={'950px'}>
+                  <chakra.div ml={"950px"}>
                     <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
                   </chakra.div>
                 </HStack>
