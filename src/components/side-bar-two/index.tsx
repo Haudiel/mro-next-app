@@ -6,6 +6,7 @@ import {
   Drawer,
   DrawerContent,
   useDisclosure,
+  chakra,
 } from '@chakra-ui/react'
 import React from 'react'
 import SidebarContent from '../side-bar-content'
@@ -13,7 +14,7 @@ import MobileNav from '../mobileNav'
 import TableCard from '../tabla-card'
 
 
-const SidebarWithHeader = () => {
+const SidebarWithHeaderTwo = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -34,10 +35,10 @@ const SidebarWithHeader = () => {
       {/* mobilenav */}
       <MobileNav onOpend={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
-        <TableCard/>
+        <chakra.h1>Hello apartado</chakra.h1>
       </Box>
     </Box>
   )
 }
 
-export default SidebarWithHeader
+export default SidebarWithHeaderTwo

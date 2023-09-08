@@ -140,6 +140,7 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
     },
     [valueDataArray]
   );
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

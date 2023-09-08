@@ -3,9 +3,46 @@ import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import { Logo } from "@/assets/Logo";
 import { SFT } from "@/assets/SFT";
+import { Button, ChakraProvider } from "@chakra-ui/react";
 
-const generateExcel = async () => {
+const generateExcel = async (data: any) => {
   const wb = new ExcelJS.Workbook();
+  //* Metadata
+  wb.creator = "SFT";
+  wb.created = new Date();
+
+  //* Crear una hoja
+  const WSheet = wb.addWorksheet("HojaPrueba", {
+    views: [{ xSplit: 1, ySplit: 1, zoomScale: 60 }],
+  });
+
+  let i = 10;
+
+  WSheet.mergeCells('E5:F5')
+  WSheet.getCell('F5').value = data.data[0].nombreSolicitante
+
+  WSheet.mergeCells('E6:F6')
+  WSheet.getCell('F6').value = data.data[0].departamento
+  
+  WSheet.mergeCells('Q5:R5')
+  const fecha = data.data[0].fechaSolicitud.split('T')
+  WSheet.getCell('R5').value = fecha[0]
+
+  WSheet.mergeCells('H30:U30')
+  WSheet.getCell('U30').value = data.data[0].lineaEstacion
+
+  WSheet.mergeCells('J31:U31')
+  WSheet.getCell('U31').value = data.data[0].justificacionAlta
+
+  data.data.forEach((dt: any) => {
+    WSheet.getCell(`C${i}`).value = dt.critico;
+    WSheet.getCell(`D${i}`).value = dt.noParteFabricante;
+    WSheet.getCell(`E${i}`).value = dt.marca;
+    WSheet.getCell(`F${i}`).value = dt.descripcion;
+    WSheet.getCell(`G${i}`).value = dt.frecuenciaCambio;
+    WSheet.getCell(`H${i}`).value = dt.cantidad;
+    i++;
+  });
 
   wb.views = [
     {
@@ -18,15 +55,6 @@ const generateExcel = async () => {
       visibility: "visible",
     },
   ];
-
-  //* Metadata
-  wb.creator = "SFT";
-  wb.created = new Date();
-
-  //* Crear una hoja
-  const WSheet = wb.addWorksheet("HojaPrueba", {
-    views: [{ xSplit: 1, ySplit: 1, zoomScale: 60 }],
-  });
 
   WSheet.getColumn("A").width = 3;
   WSheet.getColumn("B").width = 2;
@@ -108,6 +136,36 @@ const generateExcel = async () => {
     extension: "png",
   });
 
+  for (let i = 9; i < 27; i++) {
+    [
+      `C${i + 1}`,
+      `D${i + 1}`,
+      `E${i + 1}`,
+      `F${i + 1}`,
+      `G${i + 1}`,
+      `H${i + 1}`,
+      `I${i + 1}`,
+      `J${i + 1}`,
+      `K${i + 1}`,
+      `L${i + 1}`,
+      `M${i + 1}`,
+      `N${i + 1}`,
+      `O${i + 1}`,
+      `P${i + 1}`,
+      `Q${i + 1}`,
+      `R${i + 1}`,
+      `S${i + 1}`,
+      `T${i + 1}`,
+      `U${i + 1}`,
+      `V${i + 1}`,
+    ].forEach((key) => {
+      WSheet.getCell(key).alignment = {
+        vertical: 'middle',
+        horizontal: 'center',
+        wrapText: true
+      }
+    });
+  }
   for (let i = 8; i < 27; i++) {
     [
       `C${i + 1}`,
@@ -617,25 +675,26 @@ const generateExcel = async () => {
     size: 10,
     bold: true,
   };
-  WSheet.getCell('G36').alignment = {
+  WSheet.getCell("G36").alignment = {
     vertical: "bottom",
     horizontal: "right",
     wrapText: true,
-  }
+  };
 
-  WSheet.mergeCells('H36:I36')
-  WSheet.getCell('I36').border = {
+  WSheet.mergeCells("H36:I36");
+  WSheet.getCell("I36").border = {
     bottom: { style: "thin", color: { argb: "000000" } },
-  }
+  };
 
-  WSheet.mergeCells('N36:V38')
-  WSheet.getCell('V38').value = 'NOTA: La firma del Gerente de Compras y Sub Dirección es necesaria cuando el costo individual de algún material sea mayor a $1,000 USD o que el monto total del formato ascienda a $2,000 USD o más.'
-  WSheet.getCell('V38').font = font2
-  WSheet.getCell('V38').alignment = {
-    vertical: 'bottom',
-    horizontal: 'left',
-    wrapText: true
-  }
+  WSheet.mergeCells("N36:V38");
+  WSheet.getCell("V38").value =
+    "NOTA: La firma del Gerente de Compras y Sub Dirección es necesaria cuando el costo individual de algún material sea mayor a $1,000 USD o que el monto total del formato ascienda a $2,000 USD o más.";
+  WSheet.getCell("V38").font = font2;
+  WSheet.getCell("V38").alignment = {
+    vertical: "bottom",
+    horizontal: "left",
+    wrapText: true,
+  };
 
   //* HEADERS
   const headers = [
@@ -693,11 +752,15 @@ const generateExcel = async () => {
   saveAs(new Blob([blob]), "HojaPrueba.xlsx");
 };
 
-const ExportToExcelButton = () => {
+const ExportToExcelButton = (data: any) => {
   return (
-    <button onClick={() => generateExcel()}>
-      Exportar a Excel con Plantilla
-    </button>
+    <>
+      <ChakraProvider>
+        <Button onClick={() => generateExcel(data)} colorScheme="green">
+          Exportar Excel
+        </Button>
+      </ChakraProvider>
+    </>
   );
 };
 

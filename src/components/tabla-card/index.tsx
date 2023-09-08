@@ -160,7 +160,6 @@ const TablaCard = () => {
 
   return (
     <>
-      <ExportToExcelButton />
       <ThemeProvider theme={createTheme({})}>
         <div>
           {Object.keys(pedidos).map((folioPedido) => (
@@ -185,12 +184,17 @@ const TablaCard = () => {
                       {getFechaVencimientoFolio(folioPedido)}
                     </chakra.h1>
                   </chakra.div>
-                  <chakra.div ml={"950px"}>
-                    <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
-                  </chakra.div>
                 </HStack>
               </AccordionSummary>
               <AccordionDetails>
+                <chakra.div display={'flex'} justifyContent={'space-between'} mb={3}>
+                  <chakra.div>
+                    <ExportToExcelButton data={pedidos[folioPedido]}/>
+                  </chakra.div>
+                  <chakra.div>
+                    <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
+                  </chakra.div>
+                </chakra.div>
                 <TableContainer component={Paper}>
                   <Table>
                     <TableHead>
