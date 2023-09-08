@@ -31,7 +31,7 @@ const generateExcel = async () => {
   WSheet.getColumn("A").width = 3;
   WSheet.getColumn("B").width = 2;
   WSheet.getColumn("C").width = 8.14;
-  WSheet.getColumn("D").width = 20;
+  WSheet.getColumn("D").width = 25;
   WSheet.getColumn("E").width = 16;
   WSheet.getColumn("F").width = 28;
   WSheet.getColumn("G").width = 23.86;
@@ -43,7 +43,7 @@ const generateExcel = async () => {
   WSheet.getColumn("M").width = 17.86;
   WSheet.getColumn("N").width = 13.14;
   WSheet.getColumn("O").width = 12;
-  WSheet.getColumn("P").width = 10.43;
+  WSheet.getColumn("P").width = 15;
   WSheet.getColumn("Q").width = 15;
   WSheet.getColumn("R").width = 6;
   WSheet.getColumn("S").width = 8;
@@ -105,8 +105,8 @@ const generateExcel = async () => {
 
   const sftID = wb.addImage({
     base64: SFT,
-    extension: 'png'
-  })
+    extension: "png",
+  });
 
   for (let i = 8; i < 27; i++) {
     [
@@ -217,19 +217,19 @@ const generateExcel = async () => {
       top: { style: "thin", color: { argb: "000000" } },
     };
   }
-  
-  WSheet.getCell('C9').border = {
+
+  WSheet.getCell("C9").border = {
     top: { style: "medium", color: { argb: "000000" } },
     left: { style: "medium", color: { argb: "000000" } },
-  }
-  WSheet.getCell('C27').border = {
+  };
+  WSheet.getCell("C27").border = {
     bottom: { style: "medium", color: { argb: "000000" } },
     left: { style: "medium", color: { argb: "000000" } },
-  }
-  WSheet.getCell('V27').border = {
+  };
+  WSheet.getCell("V27").border = {
     bottom: { style: "medium", color: { argb: "000000" } },
     right: { style: "medium", color: { argb: "000000" } },
-  }
+  };
 
   for (let i = 0; i < 40; i++) {
     WSheet.getCell(`B${i + 1}`).border = {
@@ -321,6 +321,31 @@ const generateExcel = async () => {
     });
   }
 
+  for (let i = 8; i < 28; i++) {
+    [
+      `I${i + 1}`,
+      `J${i + 1}`,
+      `K${i + 1}`,
+      `L${i + 1}`,
+      `M${i + 1}`,
+      `N${i + 1}`,
+      `O${i + 1}`,
+      `P${i + 1}`,
+      `Q${i + 1}`,
+      `R${i + 1}`,
+      `S${i + 1}`,
+      `T${i + 1}`,
+      `U${i + 1}`,
+      `V${i + 1}`,
+    ].forEach((key) => {
+      WSheet.getCell(key).fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "D9D9D9" },
+      };
+    });
+  }
+
   WSheet.getCell("I28").border = {
     top: { style: "medium", color: { argb: "000000" } },
     left: { style: "medium", color: { argb: "000000" } },
@@ -354,6 +379,8 @@ const generateExcel = async () => {
   };
 
   [
+    `H30`,
+    `I30`,
     `J30`,
     `K30`,
     `L30`,
@@ -366,6 +393,27 @@ const generateExcel = async () => {
     `S30`,
     `T30`,
     `U30`,
+  ].forEach((key) => {
+    WSheet.getCell(key).border = {
+      bottom: { style: "thin", color: { argb: "000000" } },
+    };
+  });
+
+  [
+    `H31`,
+    `I31`,
+    `J31`,
+    `K31`,
+    `L31`,
+    `M31`,
+    `N31`,
+    `O31`,
+    `P31`,
+    `Q31`,
+    `R31`,
+    `S31`,
+    `T31`,
+    `U31`,
   ].forEach((key) => {
     WSheet.getCell(key).border = {
       bottom: { style: "thin", color: { argb: "000000" } },
@@ -424,47 +472,221 @@ const generateExcel = async () => {
     };
   });
 
-  WSheet.mergeCells('C34:D34')
-  WSheet.getCell('D34').border = {
-    bottom: { style: 'dotted', color: { argb: "000000" }}
-  }
-  WSheet.getCell('F34').border = {
-    bottom: { style: 'dotted', color: { argb: "000000" }}
-  }
-  WSheet.mergeCells('H34:I34')
-  WSheet.getCell('I34').border = {
-    bottom: { style: 'dotted', color: { argb: "000000" }}
-  }
-  WSheet.mergeCells('K34:M34')
-  WSheet.getCell('M34').border = {
-    bottom: { style: 'dotted', color: { argb: "000000" }}
-  }
-  WSheet.mergeCells('O34:Q34')
-  WSheet.getCell('Q34').border = {
-    bottom: { style: 'dotted', color: { argb: "000000" }}
-  }
-  WSheet.mergeCells('S34:U34')
-  WSheet.getCell('U34').border = {
-    bottom: { style: 'dotted', color: { argb: "000000" }}
-  }
-  
+  WSheet.mergeCells("C34:D34");
+  WSheet.getCell("D34").border = {
+    bottom: { style: "dotted", color: { argb: "000000" } },
+  };
+  WSheet.getCell("F34").border = {
+    bottom: { style: "dotted", color: { argb: "000000" } },
+  };
+  WSheet.mergeCells("H34:I34");
+  WSheet.getCell("I34").border = {
+    bottom: { style: "dotted", color: { argb: "000000" } },
+  };
+  WSheet.mergeCells("K34:M34");
+  WSheet.getCell("M34").border = {
+    bottom: { style: "dotted", color: { argb: "000000" } },
+  };
+  WSheet.mergeCells("O34:Q34");
+  WSheet.getCell("Q34").border = {
+    bottom: { style: "dotted", color: { argb: "000000" } },
+  };
+  WSheet.mergeCells("S34:U34");
+  WSheet.getCell("U34").border = {
+    bottom: { style: "dotted", color: { argb: "000000" } },
+  };
 
   WSheet.addImage(logoID, "C2:D4");
   WSheet.addImage(sftID, "U2:V4");
-  // WSheet.columns = [
-  //   { header: "Nombre", key: "nombre", width: 15 },
-  //   { header: "Edad", key: "edad", width: 10 },
-  // ];
 
-  // const data = [
-  //   { nombre: "Juan", edad: 30 },
-  //   { nombre: "María", edad: 25 },
-  //   { nombre: "Carlos", edad: 35 },
-  // ];
+  //* FUENTE
+  const font = {
+    name: "Arial Narrow",
+    size: 14,
+    bold: true,
+  };
 
-  // data.forEach((row) => {
-  //   WSheet.addRow(row);
-  // });
+  const font2 = {
+    name: "Arial Narrow",
+    size: 12,
+    bold: true,
+  };
+
+  const font3 = {
+    name: "Arial Narrow",
+    size: 12,
+    bold: false,
+  };
+  //* DATOS
+  WSheet.mergeCells("C5:D5");
+  WSheet.getCell("D5").value = "NOMBRE DEL SOLICITANTE:";
+  WSheet.getCell("D5").font = font;
+
+  WSheet.mergeCells("C6:D6");
+  WSheet.getCell("D6").value = "DEPARTAMENTO:";
+  WSheet.getCell("D6").font = font;
+
+  WSheet.mergeCells("O5:P5");
+  WSheet.getCell("P5").value = "FECHA DE SOLICITUD:";
+  WSheet.getCell("P5").font = font;
+
+  WSheet.getCell("V8").value =
+    "*** La zona sombreada se llena EXCLUSIVAMENTE por el área de COMPRAS. ***";
+  WSheet.getCell("V8").font = font;
+  WSheet.getCell("V8").alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  WSheet.mergeCells("M28:P28");
+  WSheet.getCell("P28").value = "TOTAL VALOR DE INVENTARIO:";
+  WSheet.getCell("P28").font = font2;
+
+  WSheet.mergeCells("C28:H28");
+  WSheet.getCell("H28").value =
+    "IMPORTANTE: Es requisito anexar cotización de los materiales (IT-CO-4489)";
+  WSheet.getCell("H28").font = font2;
+
+  WSheet.mergeCells("C30:G30");
+  WSheet.getCell("G30").value =
+    "LINEA O ESTACION DE TRABAJO DONDE SE UTILIZA EL MATERIAL:";
+  WSheet.getCell("G30").font = font2;
+
+  WSheet.mergeCells("C31:I31");
+  WSheet.getCell("I31").value =
+    "INDICAR JUSTIFICACION DE LA ALTA (por ejemplo: plan de mantenimiento, manual del proveedor, etc.):";
+  WSheet.getCell("I31").font = font2;
+
+  WSheet.mergeCells("C35:D35");
+  WSheet.getCell("D35").value = "FIRMA DEL SOLICITANTE";
+  WSheet.getCell("D35").font = font3;
+  WSheet.getCell("D35").alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  WSheet.getCell("F35").value = "FIRMA DEL GERENTE DE ÁREA SOLICITANTE";
+  WSheet.getCell("F35").font = font3;
+  WSheet.getCell("F35").alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  WSheet.mergeCells("H35:I35");
+  WSheet.getCell("I35").value = "FIRMA DEL SOLICITANTE";
+  WSheet.getCell("I35").font = font3;
+  WSheet.getCell("I35").alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  WSheet.mergeCells("K35:M35");
+  WSheet.getCell("M35").value = "FIRMA DEL SUPERVISOR DE COMPRAS";
+  WSheet.getCell("M35").font = font3;
+  WSheet.getCell("M35").alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  WSheet.mergeCells("O35:Q35");
+  WSheet.getCell("Q35").value = "VoBo DEL GERENTE DE COMPRAS";
+  WSheet.getCell("Q35").font = font3;
+  WSheet.getCell("Q35").alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  WSheet.mergeCells("S35:U35");
+  WSheet.getCell("U35").value = "VoBo DE SUB-DIRECCION";
+  WSheet.getCell("U35").font = font3;
+  WSheet.getCell("U35").alignment = {
+    vertical: "middle",
+    horizontal: "center",
+    wrapText: true,
+  };
+
+  WSheet.getCell("G36").value = "FECHA:";
+  WSheet.getCell("G36").font = {
+    name: "Arial Narrow",
+    size: 10,
+    bold: true,
+  };
+  WSheet.getCell('G36').alignment = {
+    vertical: "bottom",
+    horizontal: "right",
+    wrapText: true,
+  }
+
+  WSheet.mergeCells('H36:I36')
+  WSheet.getCell('I36').border = {
+    bottom: { style: "thin", color: { argb: "000000" } },
+  }
+
+  WSheet.mergeCells('N36:V38')
+  WSheet.getCell('V38').value = 'NOTA: La firma del Gerente de Compras y Sub Dirección es necesaria cuando el costo individual de algún material sea mayor a $1,000 USD o que el monto total del formato ascienda a $2,000 USD o más.'
+  WSheet.getCell('V38').font = font2
+  WSheet.getCell('V38').alignment = {
+    vertical: 'bottom',
+    horizontal: 'left',
+    wrapText: true
+  }
+
+  //* HEADERS
+  const headers = [
+    "CRITICO",
+    "NO.PARTE DE FABRICANTE",
+    "MARCA",
+    "DESCRIPCIÓN",
+    "FRECUENCIA DE CAMBIO (DIAS)",
+    "CANTIDAD",
+    "TIMEPO DE ENTREGA (DIAS)",
+    "P.R",
+    "MAX",
+    "UM",
+    "* COMMODITY",
+    "GPO COMPRA",
+    "IMPORTANCIA",
+    "SP/CS",
+    "COSTO UNITARIO",
+    "MON",
+    "STD PACK",
+    "INDICADOR",
+    "* PROYEED",
+    "MRO",
+  ];
+
+  const startColumn = "C";
+  const endColumn = "V";
+  const rowNumber = 9;
+
+  for (
+    let col = startColumn.charCodeAt(0), headerIndex = 0;
+    col <= endColumn.charCodeAt(0);
+    col++, headerIndex++
+  ) {
+    const columnName = String.fromCharCode(col);
+    const cellAddress = columnName + rowNumber;
+    const headerText = headers[headerIndex];
+
+    // Establecer el encabezado en la celda
+    WSheet.getCell(cellAddress).value = headerText;
+    WSheet.getCell(cellAddress).font = {
+      name: "Arial Narrow",
+      size: 10,
+      bold: true,
+    };
+    WSheet.getCell(cellAddress).alignment = {
+      vertical: "middle",
+      horizontal: "center",
+      wrapText: true,
+    };
+  }
 
   const blob = await wb.xlsx.writeBuffer();
 
