@@ -7,12 +7,13 @@ import {
 } from "@chakra-ui/react";
 import { SidebarProps, LinkItemProps } from "@/services/interfaces";
 import NavItem from "../navitem";
-import { FiHome, FiTrendingUp } from "react-icons/fi";
+import { FiCheck, FiHome, FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, href: "/dashboard" },
-  { name: "Solicitud", icon: FiTrendingUp, href: "/solicitud" },
+  { name: "Pendientes", icon: FiHome, href: "/dashboard" },
+  { name: "Mis solicitudes", icon: FiTrendingUp, href: "/solicitud" },
+  { name: "Aprobaciones", icon: FiCheck, href: "/aprobaciones" },
 ];
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (

@@ -41,8 +41,24 @@ const generateExcel = async (data: any) => {
     WSheet.getCell(`F${i}`).value = dt.descripcion;
     WSheet.getCell(`G${i}`).value = dt.frecuenciaCambio;
     WSheet.getCell(`H${i}`).value = dt.cantidad;
+    WSheet.getCell(`I${i}`).value = dt.tiempoEntrega;
+    WSheet.getCell(`J${i}`).value = dt.piezaRetorno;
+    WSheet.getCell(`K${i}`).value = dt.maxPz;
+    WSheet.getCell(`L${i}`).value = dt.um;
+    WSheet.getCell(`M${i}`).value = dt.commodity;
+    WSheet.getCell(`N${i}`).value = dt.gpoCompra;
+    WSheet.getCell(`O${i}`).value = dt.importancia;
+    WSheet.getCell(`P${i}`).value = dt.spcs;
+    WSheet.getCell(`Q${i}`).value = dt.costoUnitario;
+    WSheet.getCell(`R${i}`).value = dt.moneda;
+    WSheet.getCell(`S${i}`).value = dt.stdPack;
+    WSheet.getCell(`T${i}`).value = dt.indicador;
+    WSheet.getCell(`U${i}`).value = dt.proyeed;
+    WSheet.getCell(`V${i}`).value = dt.mro;
     i++;
   });
+
+  
 
   wb.views = [
     {

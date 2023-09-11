@@ -228,6 +228,7 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
                 initialValues={{
                   folioPedido: `${folio}`,
                   numComprador: ``,
+                  numSolicitante: `${employeeData?.employeeID}`,
                   nombreSolicitante: `${employeeData?.name}`,
                   departamento: `${employeeData?.descr}`,
                   fechaSolicitud: "",
