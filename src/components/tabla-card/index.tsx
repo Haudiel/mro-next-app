@@ -64,16 +64,16 @@ const TablaCard = () => {
   const [updateSolicitud, setUpdateSolicitud] = useState<UpdateSolicitud[]>([]);
   const [responseMessage, setResponseMessage] = useState("");
 
-  useEffect(() => {
-    const storedEmployeeNumber = localStorage.getItem("noEmpleado");
-    if (!storedEmployeeNumber) {
-      // Redirigir al usuario si no está autenticado
-      router.push("/"); // Asegúrate de importar el router de Next.js
-    } else {
-      // Si está autenticado, establece el número de empleado en el estado
-      setEmployeeNumber(storedEmployeeNumber);
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   const storedEmployeeNumber = localStorage.getItem("noEmpleado");
+  //   if (!storedEmployeeNumber) {
+  //     // Redirigir al usuario si no está autenticado
+  //     router.push("/"); // Asegúrate de importar el router de Next.js
+  //   } else {
+  //     // Si está autenticado, establece el número de empleado en el estado
+  //     setEmployeeNumber(storedEmployeeNumber);
+  //   }
+  // }, [router]);
 
   function getNombreCompradorPorFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
@@ -458,6 +458,7 @@ const TablaCard = () => {
                           <Select {...field} placeholder="Seleccionar">
                             <option value="A">A</option>
                             <option value="B">B</option>
+                            <option value="C">C</option>
                           </Select>
                         </FormControl>
                       )}

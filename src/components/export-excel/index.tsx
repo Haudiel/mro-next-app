@@ -11,6 +11,8 @@ const generateExcel = async (data: any) => {
   wb.creator = "SFT";
   wb.created = new Date();
 
+  console.log(data);
+
   //* Crear una hoja
   const WSheet = wb.addWorksheet("HojaPrueba", {
     views: [{ xSplit: 1, ySplit: 1, zoomScale: 60 }],
@@ -759,6 +761,10 @@ const generateExcel = async (data: any) => {
       horizontal: "center",
       wrapText: true,
     };
+  }
+
+  if (data.data[0].statusAprob == "Revision por gerente de Area") {
+    WSheet.getCell("D34").value = data.data[0].nombreSolicitante;
   }
 
   const blob = await wb.xlsx.writeBuffer();

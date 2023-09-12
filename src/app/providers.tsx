@@ -7,10 +7,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <CacheProvider>
       <ChakraProvider>
         <AuthProvider>{children}</AuthProvider>
       </ChakraProvider>
-    </CacheProvider>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
-import SidebarWithHeader from "@/components/side-bar";
+import SidebarWithHeaderThree from "@/components/side-bar-three";
 
-export default function DashboardPage() {
+export default function AprobacionesPage() {
 
   return (
     // <Container>
@@ -10,6 +10,6 @@ export default function DashboardPage() {
     //     <Button onClick={logout}>Cerrar sesión</Button>
     //   </Box>
     // </Container>
-    <SidebarWithHeader />
+    <SidebarWithHeaderThree />
   );
 }

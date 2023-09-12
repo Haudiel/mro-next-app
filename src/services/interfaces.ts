@@ -94,6 +94,7 @@ export type Pedido = {
   um: string;
   commodity: string;
   gpoCompra: string;
+  importancia: string;
   spcs: string;
   costoUnitario: string;
   moneda: string;
@@ -135,6 +136,7 @@ export type Status = {
   um: string;
   commodity: string;
   gpoCompra: string;
+  importancia: string;
   spcs: string;
   costoUnitario: string;
   moneda: string;

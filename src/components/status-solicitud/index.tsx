@@ -27,20 +27,7 @@ import { groupPedidosByFolioStatus } from "@/utils/groupPedidoStatus";
 const StatusSolicitud = () => {
   const [pedidos, setPedidos] = React.useState<GroupedStatus>({});
   console.log(pedidos);
-  const [employeeNumber, setEmployeeNumber] = useState("");
-  const router = useRouter();
   const { user, logout } = useAuth();
-
-  useEffect(() => {
-    const storedEmployeeNumber = localStorage.getItem("noEmpleado");
-    if (!storedEmployeeNumber) {
-      // Redirigir al usuario si no está autenticado
-      router.push("/"); // Asegúrate de importar el router de Next.js
-    } else {
-      // Si está autenticado, establece el número de empleado en el estado
-      setEmployeeNumber(storedEmployeeNumber);
-    }
-  }, [router]);
 
   function getNombreCompradorPorFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
