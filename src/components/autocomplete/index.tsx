@@ -11,7 +11,7 @@ export default function ComboBox() {
         disablePortal
         id="combo-box-demo"
         options={top100Films}
-        sx={{ mt: 1.5}}
+        sx={{ mt: 1.5 }}
         renderInput={(params) => <TextField {...params} label="Movie" />}
       />
     </ThemeProvider>

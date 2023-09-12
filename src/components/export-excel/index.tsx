@@ -18,21 +18,21 @@ const generateExcel = async (data: any) => {
 
   let i = 10;
 
-  WSheet.mergeCells('E5:F5')
-  WSheet.getCell('F5').value = data.data[0].nombreSolicitante
+  WSheet.mergeCells("E5:F5");
+  WSheet.getCell("F5").value = data.data[0].nombreSolicitante;
 
-  WSheet.mergeCells('E6:F6')
-  WSheet.getCell('F6').value = data.data[0].departamento
-  
-  WSheet.mergeCells('Q5:R5')
-  const fecha = data.data[0].fechaSolicitud.split('T')
-  WSheet.getCell('R5').value = fecha[0]
+  WSheet.mergeCells("E6:F6");
+  WSheet.getCell("F6").value = data.data[0].departamento;
 
-  WSheet.mergeCells('H30:U30')
-  WSheet.getCell('U30').value = data.data[0].lineaEstacion
+  WSheet.mergeCells("Q5:R5");
+  const fecha = data.data[0].fechaSolicitud.split("T");
+  WSheet.getCell("R5").value = fecha[0];
 
-  WSheet.mergeCells('J31:U31')
-  WSheet.getCell('U31').value = data.data[0].justificacionAlta
+  WSheet.mergeCells("H30:U30");
+  WSheet.getCell("U30").value = data.data[0].lineaEstacion;
+
+  WSheet.mergeCells("J31:U31");
+  WSheet.getCell("U31").value = data.data[0].justificacionAlta;
 
   data.data.forEach((dt: any) => {
     WSheet.getCell(`C${i}`).value = dt.critico;
@@ -57,8 +57,6 @@ const generateExcel = async (data: any) => {
     WSheet.getCell(`V${i}`).value = dt.mro;
     i++;
   });
-
-  
 
   wb.views = [
     {
@@ -176,10 +174,10 @@ const generateExcel = async (data: any) => {
       `V${i + 1}`,
     ].forEach((key) => {
       WSheet.getCell(key).alignment = {
-        vertical: 'middle',
-        horizontal: 'center',
-        wrapText: true
-      }
+        vertical: "middle",
+        horizontal: "center",
+        wrapText: true,
+      };
     });
   }
   for (let i = 8; i < 27; i++) {

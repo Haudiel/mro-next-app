@@ -13,15 +13,15 @@ import {
   ChakraProvider,
 } from "@chakra-ui/react";
 
-const PDFViewer = ({ pdf } : any) => {
+const PDFViewer = ({ pdf }: any) => {
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLoadPDF = () => {
     // Realiza la petición Axios para obtener el PDF en base64
-    setPdfBase64(pdf)
-    setIsOpen(true)
-  }
+    setPdfBase64(pdf);
+    setIsOpen(true);
+  };
 
   const handleClose = () => {
     setIsOpen(false); // Cierra el modal al presionar el botón de cierre
@@ -30,8 +30,10 @@ const PDFViewer = ({ pdf } : any) => {
   return (
     <div>
       <ChakraProvider>
-        <Button onClick={handleLoadPDF} colorScheme="red">Mostrar documento</Button>
-        <Modal isOpen={isOpen} onClose={handleClose} size={'xl'}>
+        <Button onClick={handleLoadPDF} colorScheme="red">
+          Mostrar documento
+        </Button>
+        <Modal isOpen={isOpen} onClose={handleClose} size={"xl"}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Visor de PDF</ModalHeader>

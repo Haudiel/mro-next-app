@@ -1,6 +1,6 @@
-'use client'
-import { useAuth } from '../contexts/AuthContext';
-import SidebarWithHeaderTwo from '@/components/side-bar-two';
+"use client";
+import { useAuth } from "../contexts/AuthContext";
+import SidebarWithHeaderTwo from "@/components/side-bar-two";
 
 export default function SolicitudPage() {
   const { user, logout } = useAuth();
@@ -12,6 +12,6 @@ export default function SolicitudPage() {
     //     <Button onClick={logout}>Cerrar sesión</Button>
     //   </Box>
     // </Container>
-    <SidebarWithHeaderTwo/>
+    <SidebarWithHeaderTwo />
   );
 }

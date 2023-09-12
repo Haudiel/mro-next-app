@@ -91,7 +91,7 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
     };
   };
 
-  console.log(valueDataArray)
+  console.log(valueDataArray);
   async function sendData() {
     try {
       valueDataArray.forEach(async (value: ValueData) => {
@@ -140,13 +140,14 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
     },
     [valueDataArray]
   );
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
           `https://localhost:7063/AdminUser/GetData?emplid=${user?.empleadoId}`
         );
+        console.log(response.data);
         setEmployeeData(response.data);
       } catch (error) {
         console.error("Error fetching employee data:", error);
@@ -231,6 +232,7 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
                   numSolicitante: `${employeeData?.employeeID}`,
                   nombreSolicitante: `${employeeData?.name}`,
                   departamento: `${employeeData?.descr}`,
+                  departmentID: `${employeeData?.departmentID}`,
                   fechaSolicitud: "",
                   fechaVencimiento: "",
                   critico: "",
@@ -289,6 +291,14 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
                       {({ field, form }: any) => (
                         <FormControl isDisabled>
                           <FormLabel>Departamento</FormLabel>
+                          <Input {...field} placeholder="name" />
+                        </FormControl>
+                      )}
+                    </Field>
+                    <Field name="departmentID">
+                      {({ field, form }: any) => (
+                        <FormControl isDisabled>
+                          <FormLabel>Departamento ID</FormLabel>
                           <Input {...field} placeholder="name" />
                         </FormControl>
                       )}

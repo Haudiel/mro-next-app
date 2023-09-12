@@ -1,5 +1,5 @@
 // app/layout.tsx
-'use client'
+"use client";
 import { useContext, useEffect } from "react";
 import { Providers } from "./providers";
 
@@ -11,9 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

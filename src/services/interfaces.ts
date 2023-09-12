@@ -27,6 +27,7 @@ export interface EmployeeData {
   descr: string;
   photo: string;
   status: string;
+  departmentID: string;
 }
 
 export interface ValueData {
@@ -36,6 +37,7 @@ export interface ValueData {
   numSolicitante: string;
   nombreSolicitante: string;
   departamento: string;
+  departmentID: string;
   critico: string;
   noParteFabricante: string;
   marca: string;
@@ -73,6 +75,7 @@ export type Pedido = {
   folioPedido: string;
   nombreSolicitante: string;
   departamento: string;
+  departmentID: string;
   numeroSolicitante: string;
   critico: string;
   noParteFabricante: string;
@@ -113,6 +116,7 @@ export type Status = {
   folioPedido: string;
   nombreSolicitante: string;
   departamento: string;
+  departmentID: string;
   numeroSolicitante: string;
   critico: string;
   noParteFabricante: string;

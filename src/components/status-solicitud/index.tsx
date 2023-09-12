@@ -99,7 +99,7 @@ const StatusSolicitud = () => {
                   <HStack>
                     <chakra.div
                       display={"flex"}
-                      justifyContent={'space-between'}
+                      justifyContent={"space-between"}
                     >
                       <chakra.div>
                         <chakra.h1>
@@ -121,7 +121,9 @@ const StatusSolicitud = () => {
                       </chakra.div>
                       <chakra.div>
                         {pedidos[folioPedido].map((pedido, index) => (
-                            <Badge colorScheme="green">{pedido.mro}</Badge>
+                          <Badge colorScheme="green">
+                            {pedido.statusAprob}
+                          </Badge>
                         ))}
                       </chakra.div>
                     </chakra.div>

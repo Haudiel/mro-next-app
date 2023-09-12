@@ -187,9 +187,13 @@ const TablaCard = () => {
                 </HStack>
               </AccordionSummary>
               <AccordionDetails>
-                <chakra.div display={'flex'} justifyContent={'space-between'} mb={3}>
+                <chakra.div
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                  mb={3}
+                >
                   <chakra.div>
-                    <ExportToExcelButton data={pedidos[folioPedido]}/>
+                    <ExportToExcelButton data={pedidos[folioPedido]} />
                   </chakra.div>
                   <chakra.div>
                     <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
