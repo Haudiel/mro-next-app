@@ -16,6 +16,7 @@ interface AuthContextProps {
 // Tipo para los datos del usuario
 interface UserData {
   empleadoId: string;
+  name: string;
 }
 
 // Tipo para el contexto
@@ -43,7 +44,8 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
       .get(`https://localhost:7063/AdminUser/Access?emplid=${empleadoId}`)
       .then((response) => {
         if (response.data.mensaje === "Access") {
-          const newUser = { empleadoId };
+          const name = response.data.name
+          const newUser = { empleadoId, name };
           // Almacenar el usuario en localStorage
           localStorage.setItem("user", JSON.stringify(newUser));
           setUser(newUser);

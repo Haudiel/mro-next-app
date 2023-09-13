@@ -57,6 +57,15 @@ const StatusSolicitud = () => {
     }
   }
 
+  function getStatusFolio(folio: string): string | undefined {
+    const ped = pedidos[folio];
+    if (ped && ped.length > 0) {
+      return ped[0].statusAprob.trim();
+    } else {
+      return undefined;
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -107,11 +116,9 @@ const StatusSolicitud = () => {
                         </chakra.h1>
                       </chakra.div>
                       <chakra.div>
-                        {pedidos[folioPedido].map((pedido, index) => (
                           <Badge colorScheme="green">
-                            {pedido.statusAprob}
+                            {getStatusFolio(folioPedido)}
                           </Badge>
-                        ))}
                       </chakra.div>
                     </chakra.div>
                   </HStack>

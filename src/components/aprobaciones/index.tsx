@@ -62,11 +62,20 @@ const AprobacionSolicitud = () => {
     }
   }
 
+  function getStatusFolio(folio: string): string | undefined {
+    const ped = pedidos[folio];
+    if (ped && ped.length > 0) {
+      return ped[0].statusAprob.trim();
+    } else {
+      return undefined;
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://localhost:7063/AdminUser/getStatus_MRO?emplid=${user?.empleadoId}`
+          `https://localhost:7063/AdminUser/ObtainAprobaciones_MRO?emplid=${user?.empleadoId}`
         );
         console.log(response.data);
         const groupedPedidos = groupPedidosByFolioStatus(response.data);
@@ -80,15 +89,11 @@ const AprobacionSolicitud = () => {
     fetchData();
   }, [user?.empleadoId]);
 
-  async function updateAprobacion(
-    folioPedido: string,
-    noParte: string,
-    descr: string
-  ) {
+  async function updateAprobacion(folioPedido: string) {
     const fetchData = async () => {
       try {
         const response = await axios.put(
-          `https://localhost:7063/AdminUser/UpdateAprobaciones?folioPedido=${folioPedido}&noParteFabricante=${noParte}&descripcion=${descr}`
+          `https://localhost:7063/AdminUser/UpdateAprobaciones?folioPedido=${folioPedido}&nmbAprob=${user?.name}&numAprob=${user?.empleadoId}`
         );
         console.log(response);
       } catch (error) {
@@ -133,11 +138,9 @@ const AprobacionSolicitud = () => {
                         </chakra.h1>
                       </chakra.div>
                       <chakra.div>
-                        {pedidos[folioPedido].map((pedido, index) => (
-                          <Badge colorScheme="green">
-                            {pedido.statusAprob}
-                          </Badge>
-                        ))}
+                        <Badge colorScheme="green">
+                          {getStatusFolio(folioPedido)}
+                        </Badge>
                       </chakra.div>
                     </chakra.div>
                   </HStack>
@@ -181,23 +184,15 @@ const AprobacionSolicitud = () => {
                   </Table>
                 </TableContainer>
                 <ChakraProvider>
-                  {pedidos[folioPedido].map((pedido, index) => (
-                    <chakra.div pt={3} display="flex" justifyContent="flex-end">
-                      <Button
-                        colorScheme="red"
-                        size="md"
-                        onClick={() =>
-                          updateAprobacion(
-                            folioPedido,
-                            pedido.noParteFabricante,
-                            pedido.descripcion
-                          )
-                        }
-                      >
-                        Aprobar
-                      </Button>
-                    </chakra.div>
-                  ))}
+                  <chakra.div pt={3} display="flex" justifyContent="flex-end">
+                    <Button
+                      colorScheme="red"
+                      size="md"
+                      onClick={() => updateAprobacion(folioPedido)}
+                    >
+                      Aprobar
+                    </Button>
+                  </chakra.div>
                 </ChakraProvider>
               </AccordionDetails>
             </Accordion>

@@ -650,7 +650,7 @@ const generateExcel = async (data: any) => {
   };
 
   WSheet.mergeCells("H35:I35");
-  WSheet.getCell("I35").value = "FIRMA DEL SOLICITANTE";
+  WSheet.getCell("I35").value = "FIRMA DEL COMPRADOR";
   WSheet.getCell("I35").font = font3;
   WSheet.getCell("I35").alignment = {
     vertical: "middle",
@@ -763,9 +763,12 @@ const generateExcel = async (data: any) => {
     };
   }
 
-  if (data.data[0].statusAprob == "Revision por gerente de Area") {
-    WSheet.getCell("D34").value = data.data[0].nombreSolicitante;
-  }
+  WSheet.getCell("D34").value = data.data[0].nmbAprob1;
+  WSheet.getCell("F34").value = data.data[0].nmbAprob2;
+  WSheet.getCell("I34").value = data.data[0].nmbAprob3;
+  WSheet.getCell("M34").value = data.data[0].nmbAprob4;
+  WSheet.getCell("Q34").value = data.data[0].nmbAprob5;
+  WSheet.getCell("U34").value = data.data[0].nmbAprob6;
 
   const blob = await wb.xlsx.writeBuffer();
 
