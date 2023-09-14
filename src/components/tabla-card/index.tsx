@@ -64,17 +64,6 @@ const TablaCard = () => {
   const [updateSolicitud, setUpdateSolicitud] = useState<UpdateSolicitud[]>([]);
   const [responseMessage, setResponseMessage] = useState("");
 
-  // useEffect(() => {
-  //   const storedEmployeeNumber = localStorage.getItem("noEmpleado");
-  //   if (!storedEmployeeNumber) {
-  //     // Redirigir al usuario si no está autenticado
-  //     router.push("/"); // Asegúrate de importar el router de Next.js
-  //   } else {
-  //     // Si está autenticado, establece el número de empleado en el estado
-  //     setEmployeeNumber(storedEmployeeNumber);
-  //   }
-  // }, [router]);
-
   function getNombreCompradorPorFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
     if (ped && ped.length > 0) {
@@ -148,15 +137,6 @@ const TablaCard = () => {
 
     fetchData();
   }, [user?.empleadoId]);
-
-  const exportToExcel = (data: any) => {
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // Puedes cambiar "Sheet1" por el nombre que desees para la hoja
-
-    // Guardar el archivo Excel
-    XLSX.writeFile(wb, "datos.xlsx");
-  };
 
   return (
     <>

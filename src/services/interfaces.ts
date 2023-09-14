@@ -204,3 +204,8 @@ export const Options = [
   { value: "14243", label: "JIMENEZ MARTINEZ, MARIA GUADALUPE" },
   { value: "13460", label: "HERNANDEZ SALCIDO, LUIS PEDRO" },
 ];
+
+export const Jefatura = [
+  { value: "7237", label: "ZAPIAIN SALAZAR, SILVIA LIZETH" },
+  { value: "14567", label: "URQUIJO CAJIGAS, MARIA GUADALUPE" },
+]
