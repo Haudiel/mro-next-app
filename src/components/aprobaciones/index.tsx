@@ -188,7 +188,12 @@ const AprobacionSolicitud = () => {
                     <Button
                       colorScheme="red"
                       size="md"
-                      onClick={() => updateAprobacion(folioPedido)}
+                      onClick={() => {
+                        updateAprobacion(folioPedido);
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 2000);
+                      }}
                     >
                       Aprobar
                     </Button>

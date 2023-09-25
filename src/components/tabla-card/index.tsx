@@ -54,15 +54,32 @@ import ExportToExcelButton from "../export-excel";
 const TablaCard = () => {
   const [pedidos, setPedidos] = React.useState<GroupedPedidos>({});
   console.log(pedidos);
-  const [employeeNumber, setEmployeeNumber] = useState("");
-  const router = useRouter();
   const { user, logout } = useAuth();
   //CHAKRA
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpend, setIsOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedPedido, setSelectedPedido] = useState<Pedido | null>(null);
+  const [accordionSeleccionado, setAccordionSeleccionado] = useState<
+    string | null
+  >(null);
 
   const [updateSolicitud, setUpdateSolicitud] = useState<UpdateSolicitud[]>([]);
   const [responseMessage, setResponseMessage] = useState("");
+
+  const [valores, setValores] = useState<any[]>([]);
+  let sumaTotal = 0;
+
+  // let sumaTotal = 0;
+
+  function calcularSuma(folioPedido: string | undefined) {
+    for (let i = 0; i < valores.length; i++) {
+      if (folioPedido === valores[i].folioPedido) {
+        console.log(valores[i].valor);
+        sumaTotal += valores[i].valor;
+      }
+    }
+    return sumaTotal;
+  }
 
   function getNombreCompradorPorFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
@@ -101,7 +118,7 @@ const TablaCard = () => {
           "https://localhost:7063/AdminUser/UpdateSolicitud",
           value
         );
-
+        await updateCosto(value.folioPedido, sumaTotal);
         setResponseMessage(response.data.message);
       });
     } catch (error) {
@@ -110,8 +127,21 @@ const TablaCard = () => {
     }
   }
 
-  const handleOpenModal = (pedido: Pedido) => {
+  async function updateCosto(folioPedido: string | undefined, sumaTotal: number) {
+    try {
+      const response = await axios.put(
+        `https://localhost:7063/AdminUser/UpdateCosto?folioPedido=${folioPedido}&totalValor=${sumaTotal}`
+      );
+      setResponseMessage(response.data.message);
+    } catch (error) {
+      console.error(error);
+      setResponseMessage("Error al enviar los datos");
+    }
+  }
+
+  const handleOpenModal = (pedido: Pedido, folioPedido: string) => {
     setSelectedPedido(pedido);
+    setAccordionSeleccionado(folioPedido);
     setIsOpen(true);
   };
 
@@ -200,7 +230,11 @@ const TablaCard = () => {
                           <TableCell>{pedido.frecuenciaCambio}</TableCell>
                           <TableCell>{pedido.cantidad}</TableCell>
                           <TableCell>
-                            <Button onClick={() => handleOpenModal(pedido)}>
+                            <Button
+                              onClick={() =>
+                                handleOpenModal(pedido, folioPedido)
+                              }
+                            >
                               Llenar
                             </Button>
                           </TableCell>
@@ -209,9 +243,14 @@ const TablaCard = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
+                {folioPedido === accordionSeleccionado && (
+                  <chakra.h1>
+                    El costo total del pedido es: {calcularSuma(folioPedido)}
+                  </chakra.h1>
+                )}
                 <ChakraProvider>
                   <chakra.div pt={3} display="flex" justifyContent="flex-end">
-                    <Button colorScheme="red" size="md" onClick={sendData}>
+                    <Button colorScheme="red" size="md" onClick={onOpen}>
                       Enviar
                     </Button>
                   </chakra.div>
@@ -223,7 +262,7 @@ const TablaCard = () => {
       </ThemeProvider>
       <ChakraProvider>
         <Modal
-          isOpen={isOpen}
+          isOpen={isOpend}
           onClose={handleCloseModal}
           scrollBehavior={"inside"}
           size={"xl"}
@@ -265,6 +304,14 @@ const TablaCard = () => {
                       ...prevArray,
                       updateSolicitud,
                     ]);
+
+                    let valor = {
+                      folioPedido: values.folioPedido,
+                      valor: values.maxPz * values.costoUnitario,
+                    };
+
+                    setValores((prevValores) => [...prevValores, valor]);
+
                     actions.setSubmitting(false);
                     handleCloseModal();
                   }, 1000);
@@ -559,6 +606,33 @@ const TablaCard = () => {
                 )}
               </Formik>
             </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Confirmación</ModalHeader>
+            <ModalBody>¿Estás seguro de que deseas enviar los datos?</ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Cancelar
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  sendData();
+                  onClose(); // Cierra el modal después de la confirmación.
+
+                  
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 2000);
+                  
+                }}
+              >
+                Confirmar
+              </Button>
+            </ModalFooter>
           </ModalContent>
         </Modal>
       </ChakraProvider>

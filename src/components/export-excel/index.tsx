@@ -614,7 +614,7 @@ const generateExcel = async (data: any) => {
   };
 
   WSheet.mergeCells("M28:P28");
-  WSheet.getCell("P28").value = "TOTAL VALOR DE INVENTARIO:";
+  WSheet.getCell("P28").value = "TOTAL VALOR DE INVENTARIO MÁXIMO:";
   WSheet.getCell("P28").font = font2;
 
   WSheet.mergeCells("C28:H28");
@@ -763,6 +763,7 @@ const generateExcel = async (data: any) => {
     };
   }
 
+  WSheet.getCell("Q28").value = data.data[0].totalValor;
   WSheet.getCell("D34").value = data.data[0].nmbAprob1;
   WSheet.getCell("F34").value = data.data[0].nmbAprob2;
   WSheet.getCell("I34").value = data.data[0].nmbAprob3;
