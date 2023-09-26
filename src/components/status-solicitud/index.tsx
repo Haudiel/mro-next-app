@@ -116,9 +116,15 @@ const StatusSolicitud = () => {
                         </chakra.h1>
                       </chakra.div>
                       <chakra.div>
-                          <Badge colorScheme="green">
-                            {getStatusFolio(folioPedido)}
-                          </Badge>
+                        <Badge
+                          colorScheme={
+                            getStatusFolio(folioPedido) === "RECHAZADO"
+                              ? "red"
+                              : "green"
+                          }
+                        >
+                          {getStatusFolio(folioPedido)}
+                        </Badge>
                       </chakra.div>
                     </chakra.div>
                   </HStack>

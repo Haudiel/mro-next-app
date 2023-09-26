@@ -23,6 +23,14 @@ import {
   chakra,
   ChakraProvider,
   HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Textarea,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
@@ -33,6 +41,17 @@ import { groupPedidosByFolioStatus } from "@/utils/groupPedidoStatus";
 const AprobacionSolicitud = () => {
   const [pedidos, setPedidos] = React.useState<GroupedStatus>({});
   const { user, logout } = useAuth();
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState(""); // Para almacenar el motivo de rechazo
+
+  const openRejectionModal = () => {
+    setIsRejectionModalOpen(true);
+  };
+
+  const openConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
 
   function getNombreCompradorPorFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
@@ -94,6 +113,20 @@ const AprobacionSolicitud = () => {
       try {
         const response = await axios.put(
           `https://localhost:7063/AdminUser/UpdateAprobaciones?folioPedido=${folioPedido}&nmbAprob=${user?.name}&numAprob=${user?.empleadoId}`
+        );
+        console.log(response);
+      } catch (error) {
+        console.error("Error con los datos: ", error);
+      }
+    };
+    fetchData();
+  }
+
+  async function updateRechazados(folioPedido: string) {
+    const fetchData = async () => {
+      try {
+        const response = await axios.put(
+          `https://localhost:7063/AdminUser/UpdateRechazados?folioPedido=${folioPedido}&numEmpleado=${user?.empleadoId}&nombEmpleado=${user?.name}&motivo=${rejectionReason}`
         );
         console.log(response);
       } catch (error) {
@@ -186,18 +219,102 @@ const AprobacionSolicitud = () => {
                 <ChakraProvider>
                   <chakra.div pt={3} display="flex" justifyContent="flex-end">
                     <Button
-                      colorScheme="red"
+                      colorScheme="green"
                       size="md"
-                      onClick={() => {
-                        updateAprobacion(folioPedido);
-                        setTimeout(() => {
-                          window.location.reload();
-                        }, 2000);
-                      }}
+                      onClick={openConfirmationModal}
+                      mr={1}
                     >
                       Aprobar
                     </Button>
+                    <Button
+                      colorScheme="red"
+                      size="md"
+                      onClick={openRejectionModal}
+                    >
+                      Rechazar
+                    </Button>
                   </chakra.div>
+                  <Modal
+                    isOpen={isConfirmationModalOpen}
+                    onClose={() => setIsConfirmationModalOpen(false)}
+                  >
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Confirmación</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        ¿Está seguro de que desea aprobar esta solicitud?
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          colorScheme="green"
+                          mr={3}
+                          onClick={() => {
+                            // Agrega aquí la lógica para aprobar la solicitud.
+                            // Por ejemplo, puedes llamar a la función updateAprobacion(folioPedido)
+                            // y luego cerrar el modal.
+                            updateAprobacion(folioPedido);
+                            setTimeout(() => {
+                              window.location.reload();
+                            }, 2000);
+                            setIsConfirmationModalOpen(false);
+                          }}
+                        >
+                          Aprobar
+                        </Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => setIsConfirmationModalOpen(false)}
+                        >
+                          Cancelar
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                  <Modal
+                    isOpen={isRejectionModalOpen}
+                    onClose={() => setIsRejectionModalOpen(false)}
+                  >
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Rechazar Solicitud</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Textarea
+                          placeholder="Motivo de rechazo"
+                          value={rejectionReason}
+                          onChange={(e) => setRejectionReason(e.target.value)}
+                        />
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => setIsRejectionModalOpen(false)}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          colorScheme="green"
+                          mr={3}
+                          onClick={() => {
+                            // Agrega aquí la lógica para rechazar la solicitud con el motivo proporcionado.
+                            // Por ejemplo, puedes llamar a una función updateRechazo(folioPedido, rejectionReason)
+                            // y luego cerrar el modal.
+                            updateRechazados(folioPedido);
+                            // updateRechazo(folioPedido, rejectionReason);
+                            setIsRejectionModalOpen(false);
+                            // También puedes restablecer el motivo de rechazo aquí si es necesario.
+                            setRejectionReason("");
+                            setTimeout(() => {
+                              window.location.reload();
+                            }, 2000);
+                          }}
+                        >
+                          Rechazar
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
                 </ChakraProvider>
               </AccordionDetails>
             </Accordion>
