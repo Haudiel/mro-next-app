@@ -127,7 +127,10 @@ const TablaCard = () => {
     }
   }
 
-  async function updateCosto(folioPedido: string | undefined, sumaTotal: number) {
+  async function updateCosto(
+    folioPedido: string | undefined,
+    sumaTotal: number
+  ) {
     try {
       const response = await axios.put(
         `https://localhost:7063/AdminUser/UpdateCosto?folioPedido=${folioPedido}&totalValor=${sumaTotal}`
@@ -623,11 +626,9 @@ const TablaCard = () => {
                   sendData();
                   onClose(); // Cierra el modal después de la confirmación.
 
-                  
                   setTimeout(() => {
                     window.location.reload();
                   }, 2000);
-                  
                 }}
               >
                 Confirmar

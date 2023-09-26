@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { GroupedStatus } from "@/services/interfaces";
 import { Badge, chakra, ChakraProvider, HStack } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
 import PDFViewer from "../pdf-viewer";
 import ExportToExcelButton from "../export-excel";
@@ -26,6 +25,7 @@ import { groupPedidosByFolioStatus } from "@/utils/groupPedidoStatus";
 
 const StatusSolicitud = () => {
   const [pedidos, setPedidos] = React.useState<GroupedStatus>({});
+
   console.log(pedidos);
   const { user, logout } = useAuth();
 
@@ -95,7 +95,7 @@ const StatusSolicitud = () => {
                   <HStack>
                     <chakra.div
                       display={"flex"}
-                      justifyContent={"space-between"}
+                      justifyContent={"space-around"}
                     >
                       <chakra.div>
                         <chakra.h1>
@@ -115,7 +115,9 @@ const StatusSolicitud = () => {
                           {getFechaVencimientoFolio(folioPedido)}
                         </chakra.h1>
                       </chakra.div>
-                      <chakra.div>
+                      <chakra.div
+                        ml={5}
+                      >
                         <Badge
                           colorScheme={
                             getStatusFolio(folioPedido) === "RECHAZADO"
