@@ -1,0 +1,124 @@
+USE [AdministrativeApps]
+GO
+/****** Object:  StoredProcedure [dbo].[getStatus_MRO]    Script Date: 9/27/2023 6:34:42 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Haudiel Orozco	
+-- Create date: 11/09/2023
+-- Description:	Informacion para status mro
+-- Exec dbo.getStatus_MRO @employee = 13460, @page = 1
+-- =============================================
+ALTER PROCEDURE [dbo].[getStatus_MRO]
+    -- Add the parameters for the stored procedure here
+    @employee varchar(6) = '13460',
+    @page int = 1 -- Número de página actual
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+
+    ;WITH CTE AS (
+        SELECT DISTINCT
+            folioPedido,
+            nombre_solicitante,
+            departamento,
+            departmentId,
+            numero_solicitante,
+            critico,
+            noParteFabricante,
+            marca,
+            descripcion,
+            frecuenciaCambio,
+            cantidad,
+            fechaSolicitud,
+            fechaVencimiento,
+            tipoProyecto,
+            lineaEstacion,
+            justificacionAlta,
+            tiempoEntrega,
+            piezaRetorno,
+            maxPz,
+            um,
+            commodity,
+            gpoCompra,
+            importancia,
+            spcs,
+            costoUnitario,
+            moneda,
+            stdPack,
+            indicador,
+            proyeed,
+            mro,
+            totalValor,
+            nmbAprob1,
+            nmbAprob2,
+            nmbAprob3,
+            nmbAprob4,
+            nmbAprob5,
+            nmbAprob6,
+            CASE
+                WHEN statusAprob = 0 THEN 'En proceso con comprador'
+                WHEN statusAprob = 1 THEN 'Revision por solicitante'
+                WHEN statusAprob = 2 THEN 'Revision por gerente de Area'
+                WHEN statusAprob = 3 THEN 'Revision por comprador'
+                WHEN statusAprob = 4 THEN 'Revision por jefatura de compras'
+                WHEN statusAprob = 5 THEN 'Revision por gerente de compras'
+                WHEN statusAprob = 6 THEN 'Revision por Direccion'
+                WHEN statusAprob = 7 THEN 'FINALIZADO'
+                WHEN statusAprob = -1 THEN 'RECHAZADO'
+            END AS statusAprob,
+            DENSE_RANK() OVER (ORDER BY folioPedido) AS FolioRank
+        FROM AdministrativeApps.dbo.Altas_MRO a
+        LEFT JOIN AdministrativeApps.dbo.Folio_MRO b ON b.Folio = a.folioPedido
+        WHERE numero_solicitante = @employee
+    )
+    SELECT
+        folioPedido,
+        nombre_solicitante,
+        departamento,
+        departmentId,
+        numero_solicitante,
+        critico,
+        noParteFabricante,
+        marca,
+        descripcion,
+        frecuenciaCambio,
+        cantidad,
+        fechaSolicitud,
+        fechaVencimiento,
+        tipoProyecto,
+        lineaEstacion,
+        justificacionAlta,
+        tiempoEntrega,
+        piezaRetorno,
+        maxPz,
+        um,
+        commodity,
+        gpoCompra,
+        importancia,
+        spcs,
+        costoUnitario,
+        moneda,
+        stdPack,
+        indicador,
+        proyeed,
+        mro,
+        totalValor,
+        nmbAprob1,
+        nmbAprob2,
+        nmbAprob3,
+        nmbAprob4,
+        nmbAprob5,
+        nmbAprob6,
+        statusAprob
+    FROM CTE
+    WHERE FolioRank BETWEEN ((@page - 1) * 8 + 1) AND (@page * 8)
+    ORDER BY folioPedido
+END
+
