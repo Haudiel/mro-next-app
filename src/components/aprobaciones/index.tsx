@@ -62,6 +62,32 @@ const AprobacionSolicitud = () => {
     }
   }
 
+  function getDepartamentoPorFolio(folio: string): string | undefined {
+    const ped = pedidos[folio];
+    if (ped && ped.length > 0) {
+      return ped[0].departamento.trim();
+    } else {
+      return undefined;
+    }
+  }
+
+  function getValorTotalPorFolio(folio: string): string | undefined {
+    const ped = pedidos[folio];
+    if (ped && ped.length > 0) {
+      return ped[0].totalValor.trim();
+    } else {
+      return undefined;
+    }
+  }
+
+  function getMonedaPorFolio(folio: string): string | undefined {
+    const ped = pedidos[folio];
+    if (ped && ped.length > 0) {
+      return ped[0].moneda.trim();
+    } else {
+      return undefined;
+    }
+  }
   function getDocumentoPorFolio(folio: string): string | undefined {
     const ped = pedidos[folio];
     if (ped && ped.length > 0) {
@@ -152,12 +178,15 @@ const AprobacionSolicitud = () => {
                       <chakra.div>
                         <chakra.h1>
                           <chakra.span fontWeight={"bold"}>
-                            PAGE APROBACIONES:{" "}
-                          </chakra.span>
-                          <chakra.span fontWeight={"bold"}>
                             Nombre del solicitante:{" "}
                           </chakra.span>
                           {getNombreCompradorPorFolio(folioPedido)}
+                        </chakra.h1>
+                        <chakra.h1>
+                          <chakra.span fontWeight={"bold"}>
+                            Departamento solicitante: {""}
+                          </chakra.span>
+                          {getDepartamentoPorFolio(folioPedido)}
                         </chakra.h1>
                         <chakra.h1>
                           <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
@@ -170,8 +199,14 @@ const AprobacionSolicitud = () => {
                           {getFechaVencimientoFolio(folioPedido)}
                         </chakra.h1>
                       </chakra.div>
-                      <chakra.div>
-                        <Badge colorScheme="green">
+                      <chakra.div ml={5}>
+                        <Badge
+                          colorScheme={
+                            getStatusFolio(folioPedido) === "RECHAZADO"
+                              ? "red"
+                              : "green"
+                          }
+                        >
                           {getStatusFolio(folioPedido)}
                         </Badge>
                       </chakra.div>
@@ -216,6 +251,11 @@ const AprobacionSolicitud = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
+                <chakra.h1>
+                  El costo total del pedido es:{" "}
+                  {getValorTotalPorFolio(folioPedido)}{" "}
+                  {getMonedaPorFolio(folioPedido)}
+                </chakra.h1>
                 <ChakraProvider>
                   <chakra.div pt={3} display="flex" justifyContent="flex-end">
                     <Button

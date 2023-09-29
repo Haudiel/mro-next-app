@@ -89,7 +89,7 @@ const generateExcel = async (data: any) => {
   WSheet.getColumn("O").width = 12;
   WSheet.getColumn("P").width = 15;
   WSheet.getColumn("Q").width = 15;
-  WSheet.getColumn("R").width = 6;
+  WSheet.getColumn("R").width = 8;
   WSheet.getColumn("S").width = 8;
   WSheet.getColumn("T").width = 10;
   WSheet.getColumn("U").width = 12;
@@ -770,6 +770,14 @@ const generateExcel = async (data: any) => {
   WSheet.getCell("M34").value = data.data[0].nmbAprob4;
   WSheet.getCell("Q34").value = data.data[0].nmbAprob5;
   WSheet.getCell("U34").value = data.data[0].nmbAprob6;
+
+  WSheet.getCell("R28").value = data.data[0].moneda;
+  WSheet.getCell("R28").font = {
+    bold: true, 
+  };
+  WSheet.getCell("Q28").font = {
+    bold: true,
+  };
 
   const blob = await wb.xlsx.writeBuffer();
 

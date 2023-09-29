@@ -66,6 +66,8 @@ const TablaCard = () => {
   const [updateSolicitud, setUpdateSolicitud] = useState<UpdateSolicitud[]>([]);
   const [responseMessage, setResponseMessage] = useState("");
 
+  const [selectedCurrency, setSelectedCurrency] = useState(""); // Estado para rastrear la moneda seleccionada
+
   const [valores, setValores] = useState<any[]>([]);
   let sumaTotal = 0;
 
@@ -303,6 +305,9 @@ const TablaCard = () => {
                       ...values,
                     };
 
+                    setSelectedCurrency(values.moneda);
+                    console.log(selectedCurrency);
+
                     setUpdateSolicitud((prevArray) => [
                       ...prevArray,
                       updateSolicitud,
@@ -534,8 +539,14 @@ const TablaCard = () => {
                         <FormControl isRequired>
                           <FormLabel>Moneda</FormLabel>
                           <Select {...field} placeholder="Seleccionar">
-                            <option value="USD">USD</option>
-                            <option value="MXN">MXN</option>
+                            {(selectedCurrency == "USD" ||
+                              selectedCurrency == "") && (
+                              <option value="USD">USD</option>
+                            )}
+                            {(selectedCurrency == "MXN" ||
+                              selectedCurrency == "") && (
+                              <option value="MXN">MXN</option>
+                            )}
                           </Select>
                         </FormControl>
                       )}
