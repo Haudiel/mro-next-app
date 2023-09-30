@@ -92,6 +92,7 @@ const MobileNav = ({ onOpend, ...rest }: MobileProps) => {
   };
 
   console.log(valueDataArray);
+  
   async function sendData() {
     try {
       valueDataArray.forEach(async (value: ValueData) => {

@@ -22,6 +22,7 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import PDFViewer from "../pdf-viewer";
 import ExportToExcelButton from "../export-excel";
 import { groupPedidosByFolioStatus } from "@/utils/groupPedidoStatus";
+import { getInfoPorFolio, obtenerAprobacionesPorEmpleado } from "@/utils/functions";
 
 const StatusSolicitud = () => {
   const [pedidos, setPedidos] = React.useState<GroupedStatus>({});
@@ -29,51 +30,12 @@ const StatusSolicitud = () => {
   console.log(pedidos);
   const { user, logout } = useAuth();
 
-  function getNombreCompradorPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].nombreSolicitante.trim();
-    } else {
-      return undefined;
-    }
-  }
-
-  function getDocumentoPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].documento;
-    } else {
-      return undefined;
-    }
-  }
-
-  function getFechaVencimientoFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      const fechaVencimiento = ped[0].fechaVencimiento.split("T");
-      return fechaVencimiento[0];
-    } else {
-      return undefined;
-    }
-  }
-
-  function getStatusFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].statusAprob.trim();
-    } else {
-      return undefined;
-    }
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://localhost:7063/AdminUser/getStatus_MRO?emplid=${user?.empleadoId}`
-        );
-        console.log(response.data);
-        const groupedPedidos = groupPedidosByFolioStatus(response.data);
+        const response = await obtenerAprobacionesPorEmpleado(user?.empleadoId);
+        console.log(response);
+        const groupedPedidos = groupPedidosByFolioStatus(response);
         setPedidos(groupedPedidos);
         console.log(groupedPedidos);
       } catch (error) {
@@ -102,7 +64,7 @@ const StatusSolicitud = () => {
                           <chakra.span fontWeight={"bold"}>
                             Nombre del solicitante:{" "}
                           </chakra.span>
-                          {getNombreCompradorPorFolio(folioPedido)}
+                          {getInfoPorFolio(pedidos, folioPedido, 'nombreSolicitante')}
                         </chakra.h1>
                         <chakra.h1>
                           <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
@@ -112,7 +74,7 @@ const StatusSolicitud = () => {
                           <chakra.span fontWeight={"bold"}>
                             Fecha de vencimiento:{" "}
                           </chakra.span>
-                          {getFechaVencimientoFolio(folioPedido)}
+                          {getInfoPorFolio(pedidos, folioPedido, 'fechaVencimiento')}
                         </chakra.h1>
                       </chakra.div>
                       <chakra.div
@@ -120,12 +82,12 @@ const StatusSolicitud = () => {
                       >
                         <Badge
                           colorScheme={
-                            getStatusFolio(folioPedido) === "RECHAZADO"
+                            getInfoPorFolio(pedidos, folioPedido, 'statusAprob') === "RECHAZADO"
                               ? "red"
                               : "green"
                           }
                         >
-                          {getStatusFolio(folioPedido)}
+                          {getInfoPorFolio(pedidos, folioPedido, 'statusAprob')}
                         </Badge>
                       </chakra.div>
                     </chakra.div>
@@ -142,7 +104,7 @@ const StatusSolicitud = () => {
                     <ExportToExcelButton data={pedidos[folioPedido]} />
                   </chakra.div>
                   <chakra.div>
-                    <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
+                    <PDFViewer pdf={getInfoPorFolio(pedidos, folioPedido, 'documento')} />
                   </chakra.div>
                 </chakra.div>
                 <TableContainer component={Paper}>

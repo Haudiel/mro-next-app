@@ -2,7 +2,6 @@ import * as React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Paper,
@@ -44,12 +43,10 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
-import * as XLSX from "xlsx";
-// import MyComponent from "../export-xlsx";
 import PDFViewer from "../pdf-viewer";
 import ExportToExcelButton from "../export-excel";
+import { getInfoPorFolio } from "@/utils/functions";
 
 const TablaCard = () => {
   const [pedidos, setPedidos] = React.useState<GroupedPedidos>({});
@@ -81,34 +78,6 @@ const TablaCard = () => {
       }
     }
     return sumaTotal;
-  }
-
-  function getNombreCompradorPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].nombreSolicitante.trim();
-    } else {
-      return undefined;
-    }
-  }
-
-  function getDocumentoPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].documento;
-    } else {
-      return undefined;
-    }
-  }
-
-  function getFechaVencimientoFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      const fechaVencimiento = ped[0].fechaVencimiento.split("T");
-      return fechaVencimiento[0];
-    } else {
-      return undefined;
-    }
   }
 
   async function sendData() {
@@ -186,7 +155,7 @@ const TablaCard = () => {
                       <chakra.span fontWeight={"bold"}>
                         Nombre del solicitante:{" "}
                       </chakra.span>
-                      {getNombreCompradorPorFolio(folioPedido)}
+                      {getInfoPorFolio(pedidos, folioPedido, 'nombreSolicitante')}
                     </chakra.h1>
                     <chakra.h1>
                       <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
@@ -196,7 +165,7 @@ const TablaCard = () => {
                       <chakra.span fontWeight={"bold"}>
                         Fecha de vencimiento:{" "}
                       </chakra.span>
-                      {getFechaVencimientoFolio(folioPedido)}
+                      {getInfoPorFolio(pedidos, folioPedido, 'fechaVencimiento')}
                     </chakra.h1>
                   </chakra.div>
                 </HStack>
@@ -211,7 +180,7 @@ const TablaCard = () => {
                     <ExportToExcelButton data={pedidos[folioPedido]} />
                   </chakra.div>
                   <chakra.div>
-                    <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
+                    <PDFViewer pdf={getInfoPorFolio(pedidos, folioPedido, 'documento')} />
                   </chakra.div>
                 </chakra.div>
                 <TableContainer component={Paper}>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Box,
@@ -17,7 +17,6 @@ import {
   AlertTitle,
   Collapse,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { useAuth } from "@/app/contexts/AuthContext";
 
 interface ResponseData {
@@ -26,13 +25,27 @@ interface ResponseData {
 
 const LoginForm = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [empleadoId, setEmpleadoId] = useState("");
   const { login } = useAuth();
   const router = useRouter();
 
-  const handleLogin = () => {
-    login(empleadoId);
-    router.push("/dashboard"); // Redirigir a la página de dashboard después del inicio de sesión
+  const handleLogin = async () => {
+    // Ocultar cualquier mensaje de error previo
+    setShowErrorAlert(false);
+
+    // Llamar a la función de inicio de sesión (supongo que devuelve un booleano)
+    const loginSuccessful = await login(empleadoId);
+
+    if (loginSuccessful) {
+      // Si el inicio de sesión es exitoso, mostrar el Alert de éxito
+      setShowSuccessAlert(true);
+      // Redirigir a la página de dashboard después del inicio de sesión
+      router.push("/dashboard");
+    } else {
+      // Si el inicio de sesión falla, mostrar el Alert de error
+      setShowErrorAlert(true);
+    }
   };
 
   return (
@@ -85,6 +98,29 @@ const LoginForm = () => {
                     </AlertTitle>
                     <AlertDescription maxWidth="sm">
                       Has obtenido acceso con éxito.
+                    </AlertDescription>
+                  </Alert>
+                </Collapse>
+              )}
+              {showErrorAlert && (
+                <Collapse in={showErrorAlert} animateOpacity>
+                  <Alert
+                    status="error"
+                    variant="subtle"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    textAlign="center"
+                    height="150px"
+                    borderRadius={10}
+                    mt={4}
+                  >
+                    <AlertIcon boxSize="40px" mr={0} />
+                    <AlertTitle mt={4} mb={1} fontSize="lg">
+                      Error de acceso
+                    </AlertTitle>
+                    <AlertDescription maxWidth="sm">
+                      No tienes acceso. Verifica tus credenciales.
                     </AlertDescription>
                   </Alert>
                 </Collapse>

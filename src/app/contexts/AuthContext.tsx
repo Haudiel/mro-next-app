@@ -22,7 +22,7 @@ interface UserData {
 // Tipo para el contexto
 interface AuthContextType {
   user: UserData | null;
-  login: (empleadoId: string) => void;
+  login: (empleadoId: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -38,25 +38,30 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
   });
 
   // Función para iniciar sesión
-  const login = (empleadoId: string) => {
-    // Realizar una petición GET al servidor para verificar el acceso
-    axios
-      .get(`https://localhost:7063/AdminUser/Access?emplid=${empleadoId}`)
-      .then((response) => {
-        if (response.data.mensaje === "Access") {
-          const name = response.data.name
-          const newUser = { empleadoId, name };
-          // Almacenar el usuario en localStorage
-          localStorage.setItem("user", JSON.stringify(newUser));
-          setUser(newUser);
-        } else {
-          // Manejar un mensaje de error si el acceso no es válido
-          console.error("Acceso no válido");
-        }
-      })
-      .catch((error) => {
-        console.error("Error al iniciar sesión", error);
-      });
+  // En tu contexto useAuth
+  const login = async (empleadoId: string): Promise<boolean> => {
+    try {
+      // Realizar una petición GET al servidor para verificar el acceso
+      const response = await axios.get(
+        `https://localhost:7063/AdminUser/Access?emplid=${empleadoId}`
+      );
+
+      if (response.data.mensaje === "Access") {
+        const name = response.data.name;
+        const newUser = { empleadoId, name };
+        // Almacenar el usuario en localStorage
+        localStorage.setItem("user", JSON.stringify(newUser));
+        setUser(newUser);
+        return true; // Devuelve true para un inicio de sesión exitoso
+      } else {
+        // Manejar un mensaje de error si el acceso no es válido
+        console.error("Acceso no válido");
+        return false; // Devuelve false para un inicio de sesión fallido
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión", error);
+      return false; // Devuelve false en caso de un error
+    }
   };
 
   // Función para cerrar sesión

@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { GroupedStatus } from "@/services/interfaces";
 import {
   Badge,
@@ -32,11 +31,16 @@ import {
   ModalOverlay,
   Textarea,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
 import PDFViewer from "../pdf-viewer";
 import ExportToExcelButton from "../export-excel";
-import { groupPedidosByFolioStatus } from "@/utils/groupPedidoStatus";
+import {
+  actualizarAprobacion,
+  actualizarRechazo,
+  getInfoPorFolio,
+  obtenerAprobacionesPorEmpleado,
+  groupPedidosByFolioStatus,
+} from "@/utils/functions";
 
 const AprobacionSolicitud = () => {
   const [pedidos, setPedidos] = React.useState<GroupedStatus>({});
@@ -53,77 +57,12 @@ const AprobacionSolicitud = () => {
     setIsConfirmationModalOpen(true);
   };
 
-  function getNombreCompradorPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].nombreSolicitante.trim();
-    } else {
-      return undefined;
-    }
-  }
-
-  function getDepartamentoPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].departamento.trim();
-    } else {
-      return undefined;
-    }
-  }
-
-  function getValorTotalPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].totalValor.trim();
-    } else {
-      return undefined;
-    }
-  }
-
-  function getMonedaPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].moneda.trim();
-    } else {
-      return undefined;
-    }
-  }
-  function getDocumentoPorFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].documento;
-    } else {
-      return undefined;
-    }
-  }
-
-  function getFechaVencimientoFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      const fechaVencimiento = ped[0].fechaVencimiento.split("T");
-      return fechaVencimiento[0];
-    } else {
-      return undefined;
-    }
-  }
-
-  function getStatusFolio(folio: string): string | undefined {
-    const ped = pedidos[folio];
-    if (ped && ped.length > 0) {
-      return ped[0].statusAprob.trim();
-    } else {
-      return undefined;
-    }
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://localhost:7063/AdminUser/ObtainAprobaciones_MRO?emplid=${user?.empleadoId}`
-        );
-        console.log(response.data);
-        const groupedPedidos = groupPedidosByFolioStatus(response.data);
+        const response = await obtenerAprobacionesPorEmpleado(user?.empleadoId);
+        console.log(response);
+        const groupedPedidos = groupPedidosByFolioStatus(response);
         setPedidos(groupedPedidos);
         console.log(groupedPedidos);
       } catch (error) {
@@ -134,32 +73,31 @@ const AprobacionSolicitud = () => {
     fetchData();
   }, [user?.empleadoId]);
 
-  async function updateAprobacion(folioPedido: string) {
-    const fetchData = async () => {
-      try {
-        const response = await axios.put(
-          `https://localhost:7063/AdminUser/UpdateAprobaciones?folioPedido=${folioPedido}&nmbAprob=${user?.name}&numAprob=${user?.empleadoId}`
-        );
-        console.log(response);
-      } catch (error) {
-        console.error("Error con los datos: ", error);
-      }
-    };
-    fetchData();
+  async function updateAprobacion(folioPedido: any) {
+    try {
+      const response = await actualizarAprobacion(
+        folioPedido,
+        user?.name,
+        user?.empleadoId
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error con los datos: ", error);
+    }
   }
 
-  async function updateRechazados(folioPedido: string) {
-    const fetchData = async () => {
-      try {
-        const response = await axios.put(
-          `https://localhost:7063/AdminUser/UpdateRechazados?folioPedido=${folioPedido}&numEmpleado=${user?.empleadoId}&nombEmpleado=${user?.name}&motivo=${rejectionReason}`
-        );
-        console.log(response);
-      } catch (error) {
-        console.error("Error con los datos: ", error);
-      }
-    };
-    fetchData();
+  async function updateRechazados(folioPedido: any) {
+    try {
+      const response = await actualizarRechazo(
+        folioPedido,
+        user?.empleadoId,
+        user?.name,
+        rejectionReason
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error con los datos: ", error);
+    }
   }
 
   return (
@@ -180,13 +118,21 @@ const AprobacionSolicitud = () => {
                           <chakra.span fontWeight={"bold"}>
                             Nombre del solicitante:{" "}
                           </chakra.span>
-                          {getNombreCompradorPorFolio(folioPedido)}
+                          {getInfoPorFolio(
+                            pedidos,
+                            folioPedido,
+                            "nombreSolicitante"
+                          )}
                         </chakra.h1>
                         <chakra.h1>
                           <chakra.span fontWeight={"bold"}>
                             Departamento solicitante: {""}
                           </chakra.span>
-                          {getDepartamentoPorFolio(folioPedido)}
+                          {getInfoPorFolio(
+                            pedidos,
+                            folioPedido,
+                            "departamento"
+                          )}
                         </chakra.h1>
                         <chakra.h1>
                           <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
@@ -196,18 +142,26 @@ const AprobacionSolicitud = () => {
                           <chakra.span fontWeight={"bold"}>
                             Fecha de vencimiento:{" "}
                           </chakra.span>
-                          {getFechaVencimientoFolio(folioPedido)}
+                          {getInfoPorFolio(
+                            pedidos,
+                            folioPedido,
+                            "fechaVencimiento"
+                          )}
                         </chakra.h1>
                       </chakra.div>
                       <chakra.div ml={5}>
                         <Badge
                           colorScheme={
-                            getStatusFolio(folioPedido) === "RECHAZADO"
+                            getInfoPorFolio(
+                              pedidos,
+                              folioPedido,
+                              "statusAprob"
+                            ) === "RECHAZADO"
                               ? "red"
                               : "green"
                           }
                         >
-                          {getStatusFolio(folioPedido)}
+                          {getInfoPorFolio(pedidos, folioPedido, "statusAprob")}
                         </Badge>
                       </chakra.div>
                     </chakra.div>
@@ -224,7 +178,9 @@ const AprobacionSolicitud = () => {
                     <ExportToExcelButton data={pedidos[folioPedido]} />
                   </chakra.div>
                   <chakra.div>
-                    <PDFViewer pdf={getDocumentoPorFolio(folioPedido)} />
+                    <PDFViewer
+                      pdf={getInfoPorFolio(pedidos, folioPedido, "documento")}
+                    />
                   </chakra.div>
                 </chakra.div>
                 <TableContainer component={Paper}>
@@ -253,8 +209,8 @@ const AprobacionSolicitud = () => {
                 </TableContainer>
                 <chakra.h1>
                   El costo total del pedido es:{" "}
-                  {getValorTotalPorFolio(folioPedido)}{" "}
-                  {getMonedaPorFolio(folioPedido)}
+                  {getInfoPorFolio(pedidos, folioPedido, "totalValor")}{" "}
+                  {getInfoPorFolio(pedidos, folioPedido, "moneda")}
                 </chakra.h1>
                 <ChakraProvider>
                   <chakra.div pt={3} display="flex" justifyContent="flex-end">
