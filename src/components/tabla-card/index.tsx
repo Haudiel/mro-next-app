@@ -40,6 +40,7 @@ import {
   Select,
   useDisclosure,
   chakra,
+  Text,
   HStack,
 } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
@@ -59,14 +60,15 @@ const TablaCard = () => {
   const [accordionSeleccionado, setAccordionSeleccionado] = useState<
     string | null
   >(null);
-
+  
   const [updateSolicitud, setUpdateSolicitud] = useState<UpdateSolicitud[]>([]);
   const [responseMessage, setResponseMessage] = useState("");
-
+  
   const [selectedCurrency, setSelectedCurrency] = useState(""); // Estado para rastrear la moneda seleccionada
-
+  
   const [valores, setValores] = useState<any[]>([]);
   let sumaTotal = 0;
+  let rowIndex = 1;
 
   // let sumaTotal = 0;
 
@@ -155,7 +157,11 @@ const TablaCard = () => {
                       <chakra.span fontWeight={"bold"}>
                         Nombre del solicitante:{" "}
                       </chakra.span>
-                      {getInfoPorFolio(pedidos, folioPedido, 'nombreSolicitante')}
+                      {getInfoPorFolio(
+                        pedidos,
+                        folioPedido,
+                        "nombreSolicitante"
+                      )}
                     </chakra.h1>
                     <chakra.h1>
                       <chakra.span fontWeight={"bold"}>Folio: </chakra.span>
@@ -165,7 +171,11 @@ const TablaCard = () => {
                       <chakra.span fontWeight={"bold"}>
                         Fecha de vencimiento:{" "}
                       </chakra.span>
-                      {getInfoPorFolio(pedidos, folioPedido, 'fechaVencimiento')}
+                      {getInfoPorFolio(
+                        pedidos,
+                        folioPedido,
+                        "fechaVencimiento"
+                      )}
                     </chakra.h1>
                   </chakra.div>
                 </HStack>
@@ -180,13 +190,16 @@ const TablaCard = () => {
                     <ExportToExcelButton data={pedidos[folioPedido]} />
                   </chakra.div>
                   <chakra.div>
-                    <PDFViewer pdf={getInfoPorFolio(pedidos, folioPedido, 'documento')} />
+                    <PDFViewer
+                      pdf={getInfoPorFolio(pedidos, folioPedido, "documento")}
+                    />
                   </chakra.div>
                 </chakra.div>
                 <TableContainer component={Paper}>
                   <Table>
                     <TableHead>
                       <TableRow>
+                        <TableCell>#</TableCell>
                         <TableCell>No. Parte</TableCell>
                         <TableCell>Marca</TableCell>
                         <TableCell>Descripcion</TableCell>
@@ -198,6 +211,7 @@ const TablaCard = () => {
                     <TableBody>
                       {pedidos[folioPedido].map((pedido, index) => (
                         <TableRow key={index} hover>
+                          <TableCell>{rowIndex++}</TableCell>
                           <TableCell>{pedido.noParteFabricante}</TableCell>
                           <TableCell>{pedido.marca}</TableCell>
                           <TableCell>{pedido.descripcion}</TableCell>
@@ -219,7 +233,8 @@ const TablaCard = () => {
                 </TableContainer>
                 {folioPedido === accordionSeleccionado && (
                   <chakra.h1>
-                    El costo total del pedido es: {calcularSuma(folioPedido)}
+                    El costo total del pedido es: {calcularSuma(folioPedido)}{" "}
+                    {selectedCurrency}
                   </chakra.h1>
                 )}
                 <ChakraProvider>
@@ -257,6 +272,7 @@ const TablaCard = () => {
                   um: "",
                   commodity: 0,
                   gpoCompra: 0,
+                  importancia: "",
                   spcs: "",
                   costoUnitario: 0,
                   moneda: "",
@@ -517,6 +533,10 @@ const TablaCard = () => {
                               <option value="MXN">MXN</option>
                             )}
                           </Select>
+                          <Text color="red" fontSize="x-small">
+                            NOTA: Todo el formato deberá ser con la misma
+                            moneda.
+                          </Text>
                         </FormControl>
                       )}
                     </Field>
@@ -606,9 +626,9 @@ const TablaCard = () => {
                   sendData();
                   onClose(); // Cierra el modal después de la confirmación.
 
-                  setTimeout(() => {
-                    window.location.reload();
-                  }, 2000);
+                  // setTimeout(() => {
+                  //   window.location.reload();
+                  // }, 2000);
                 }}
               >
                 Confirmar

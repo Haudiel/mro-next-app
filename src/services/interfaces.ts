@@ -62,6 +62,7 @@ export interface UpdateSolicitud {
   um: string;
   commodity: number;
   gpoCompra: number;
+  importancia: string;
   spcs: string;
   costoUnitario: number;
   moneda: string;

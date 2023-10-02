@@ -22,7 +22,7 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import PDFViewer from "../pdf-viewer";
 import ExportToExcelButton from "../export-excel";
 import { groupPedidosByFolioStatus } from "@/utils/groupPedidoStatus";
-import { getInfoPorFolio, obtenerAprobacionesPorEmpleado } from "@/utils/functions";
+import { getInfoPorFolio, getStatusMROByEmployeeId } from "@/utils/functions";
 
 const StatusSolicitud = () => {
   const [pedidos, setPedidos] = React.useState<GroupedStatus>({});
@@ -33,7 +33,7 @@ const StatusSolicitud = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await obtenerAprobacionesPorEmpleado(user?.empleadoId);
+        const response = await getStatusMROByEmployeeId(user?.empleadoId);
         console.log(response);
         const groupedPedidos = groupPedidosByFolioStatus(response);
         setPedidos(groupedPedidos);
@@ -42,7 +42,7 @@ const StatusSolicitud = () => {
         console.error("Error fetching employee data:", error);
       }
     };
-
+  
     fetchData();
   }, [user?.empleadoId]);
 

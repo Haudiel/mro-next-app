@@ -33,6 +33,15 @@ export async function obtenerAprobacionesPorEmpleado(empleadoId: any) {
   }
 }
 
+export async function getStatusMROByEmployeeId(employeeId:any) {
+  try {
+    const response = await axios.get(`${BASE_URL}/getStatus_MRO?emplid=${employeeId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error fetching employee data: " + error);
+  }
+}
+
 // Función para actualizar la aprobación de un pedido
 export async function actualizarAprobacion(
   folioPedido: any,
